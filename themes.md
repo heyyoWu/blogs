@@ -10,7 +10,7 @@ customized theme.
 [Source](https://github.com/jhildenbiddle/docsify-themeable/tree/master/src/scss/themes/defaults)
 
 ```html
-<!-- Theme: Defaults -->
+<!-- Theme: Defaults --> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-defaults.css">
 ```
 
