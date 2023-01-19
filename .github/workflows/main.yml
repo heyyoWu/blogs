@@ -1,15 +1,16 @@
-name: Deploy My Server
+name: docs
 
 on:
+  # 每当 push 到 main 分支时触发部署
   push:
-    branches:
-      - main # 只在master上push触发部署
-      
+    branches: [main]
+
+
 jobs:
   deploy:
     runs-on: ubuntu-latest # 使用ubuntu系统镜像运行自动化脚本
     steps:
-      - uses: actions/checkout@v1 
+      - uses: actions/checkout@v1
       - name: Deploy to Staging My server
         uses: easingthemes/ssh-deploy@v2.1.6
         env:
@@ -17,6 +18,49 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.MY_TENCENT_SERVER_PRIVATE_SECRET_KEY }} #后面指定为该仓库配置的私钥
           ARGS: "-rltgoDzvO"
           SOURCE: '/'
+          REMOTE_HOST: '124.221.154.95'
+          REMOTE_USER: 'root'
+          TARGET: '/home/blog/'
+
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          # 选择要使用的 pnpm 版本
+          version: 7
+          # 使用 pnpm 安装依赖
+          run_install: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          # 选择要使用的 node 版本
+          node-version: 18
+          # 缓存 pnpm 依赖
+          cache: pnpm
+
+      # 运行构建脚本
+      - name: Build VuePress site
+        run: pnpm docs:build
+
+      # 部署到腾讯云服务器
+      - name: Deploy to Staging My server
+        uses: easingthemes/ssh-deploy@v2.1.6
+        env:
+          #私钥
+          SSH_PRIVATE_KEY: ${{ secrets.MY_TENCENT_SERVER_PRIVATE_SECRET_KEY }} #后面指定为该仓库配置的私钥
+          ARGS: "-rltgoDzvO"
+          SOURCE: 'docs/.vuepress/dist'
           REMOTE_HOST: '124.221.154.95'
           REMOTE_USER: 'root'
           TARGET: '/home/blog/'
