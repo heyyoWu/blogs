@@ -1,8 +1,0 @@
-# Elasticsearch
-
-## aaa
-
-
-
-## bbb
-
