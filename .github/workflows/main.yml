@@ -44,3 +44,4 @@ jobs:
           REMOTE_HOST: '124.221.154.95'
           REMOTE_USER: 'root'
           TARGET: '/home/blog/'
+          SCRIPT_BEFORE: 'rm -rf /home/blog/*'
