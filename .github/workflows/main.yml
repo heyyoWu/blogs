@@ -40,7 +40,7 @@ jobs:
           #私钥
           SSH_PRIVATE_KEY: ${{ secrets.MY_TENCENT_SERVER_PRIVATE_SECRET_KEY }} #后面指定为该仓库配置的私钥
           ARGS: "-rltgoDzvO"
-          SOURCE: 'docs/.vuepress/dist'
+          SOURCE: 'docs/.vuepress/dist/'
           REMOTE_HOST: '124.221.154.95'
           REMOTE_USER: 'root'
           TARGET: '/home/blog/'
