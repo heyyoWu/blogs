@@ -1,12 +1,9 @@
 // @ts-ignore
 import process from 'node:process'
-import { defineUserConfig } from 'vuepress'
-import { defaultTheme } from 'vuepress'
-import {
-  head,
-  navbarZh,
-  sidebarZh,
-} from './configs/index.js'
+import { head, navbarZh, sidebarZh } from './configs'
+import { searchPlugin } from '@vuepress/plugin-search'
+import { defineUserConfig, defaultTheme } from 'vuepress'
+import { docsearchPlugin } from '@vuepress/plugin-docsearch'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -21,16 +18,17 @@ export default defineUserConfig({
     }
   },
   theme: defaultTheme({
+    colorMode: 'auto',
     logo: '/images/hero.png',
     repo: 'wumindc/blogs',
     docsDir: 'docs',
+    repoLabel: 'GitHub',
+    editLink: true,
+    lastUpdated: true,
     locales: {
       '/': {
-        // navbar
         navbar: navbarZh,
-        // sidebar
         sidebar: sidebarZh,
-        // page meta
         editLinkText: '在 GitHub 上编辑此页',
         lastUpdatedText: '上次更新',
         contributorsText: '贡献者',
@@ -53,10 +51,37 @@ export default defineUserConfig({
       }
     },
     themePlugins: {
-      // only enable git plugin in production mode
       git: isProd,
-      // use shiki plugin in production mode instead
       prismjs: !isProd,
+      activeHeaderLinks: true,
+      backToTop: true,
+      container: {
+        tip: true,
+        warning: true,
+        danger: true,
+        details: true,
+        codeGroup: true,
+        codeGroupItem: true,
+      },
+      externalLinkIcon: true,
+      mediumZoom: true,
+      nprogress: true,
     }
-  })
+  }),
+  plugins:[
+    docsearchPlugin({
+      apiKey:'666',
+      indexName:'666',
+      appId:'',
+      searchParameters:'',
+      placeholder:'搜索',
+    }),
+    // searchPlugin({
+    //   locales: {
+    //     '/': {
+    //       placeholder: '搜索',
+    //     },
+    //   }
+    // }),
+  ]
 })
