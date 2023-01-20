@@ -16,8 +16,8 @@ export default defineUserConfig({
   locales: {
     '/': {
       lang: 'zh-CN',
-      title: '日志',
-      description: '静态日志网站',
+      title: '冒险者',
+      description: '没有什么不可以',
     }
   },
   theme: defaultTheme({
