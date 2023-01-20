@@ -1,7 +1,7 @@
 // @ts-ignore
 import process from 'node:process'
-import { defineUserConfig } from '@vuepress/cli'
-import { defaultTheme } from '@vuepress/theme-default'
+import { defineUserConfig } from 'vuepress'
+import { defaultTheme } from 'vuepress'
 import {
   head,
   navbarZh,

@@ -7,7 +7,8 @@ export const sidebarZh: SidebarConfig = {
       children: [
         '/coding/java/base.md',
         '/coding/java/reflect.md',
-        '/coding/java/jvm.md'
+        '/coding/java/jvm.md',
+        '/coding/java/design-pattern.md'
       ],
     },
   ],
