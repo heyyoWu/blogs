@@ -136,105 +136,120 @@ public void getName() {
     <tr>
         <td>访问控制</td>
         <td>private</td>
-        <td>public</td>
         <td>protected</td>
+        <td>public</td>
         <td></td>
         <td></td>
         <td></td>
     </tr>
     <tr>
         <td rowspan="3">类,变量,方法修饰符</td>
-        <td>class</td>
-        <td>interface</td>
-        <td>enum</td>
-        <td>extends</td>
-        <td>implement</td>
         <td>abstract</td>
+        <td>class</td>
+        <td>extends</td>
+        <td>final</td>
+        <td>implements</td>
+        <td>interface</td>
     </tr>
     <tr>
-        <td>final</td>
         <td>native</td>
         <td>new</td>
         <td>static</td>
+        <td>strictfp</td>
         <td>synchronized</td>
         <td>transient</td>
     </tr>
     <tr>
         <td>volatile</td>
-        <td>strictfp</td>
+        <td>enum</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="3">程序控制</td>
+        <td>break</td>
+        <td>continue</td>
+        <td>return</td>
+        <td>do</td>
+        <td>while</td>
+        <td>if</td>
+    </tr>
+    <tr>
+        <td>else</td>
+        <td>for</td>
+        <td>instanceof</td>
+        <td>switch</td>
+        <td>case</td>
         <td>default</td>
+    </tr>
+    <tr>
+        <td>assert</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>错误处理</td>
+        <td>try</td>
+        <td>catch</td>
+        <td>finally</td>
+        <td>throw</td>
+        <td>throws</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>包相关</td>
+        <td>import</td>
+        <td>package</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="2">基本类型</td>
+        <td>byte</td>
+        <td>char</td>
+        <td>int</td>
+        <td>float</td>
+        <td>double</td>
+        <td>long</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>short</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>变量引用</td>
+        <td>super</td>
+        <td>this</td>
+        <td>void</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>保留字</td>
+        <td>goto</td>
+        <td>const</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 
-
-
-程序控制
-if
-else
-switch
-case
-break
-continue
-return
-
-do
-while
-for
-default
-instanceof
-assert
-
-错误处理
-try
-catch
-finally
-throw
-throws
-
-
-包相关
-import
-package
-
-
-
-
-
-
-基本类型
-byte
-char
-int
-float
-double
-long
-boolean
-
-short
-
-
-
-
-
-
-变量引用
-super
-this
-void
-
-
-
-
-保留字
-goto
-const
-
-
-
-
-
 ### 2.3、自增、自减运算符
-++  --
+**关键字：** <strong style="color:#93934d">++</strong>  <strong style="color:#93934d;margin-left:10px">--</strong>
+```java
 int a = 1;
 System.out.print(a++); // 输出 1
 System.out.print(a);   // 输出 2
@@ -244,11 +259,13 @@ System.out.print(++b); // 输出 2
 System.out.print(b);   // 输出 2
 
 口诀：“符号在前就先加/减，符号在后就后加/减”
+```
 
 ### 2.4、continue、break、return 区别
-- continue:  跳出单次循环，继续下一次循环
-- break:  结束循环体，继续循环后的代码
-- return:  跳出所在方法，结束该方法的运行
+- **`continue`**:  跳出单次循环，继续下一次循环
+- **`break`**:  结束循环体，继续循环后的代码
+- **`return`**:  跳出所在方法，结束该方法的运行
+
 
 ### 2.5、变量
 #### 2.5.1、成员变量 与 局部变量
