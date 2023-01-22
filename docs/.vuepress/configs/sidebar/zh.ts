@@ -8,7 +8,8 @@ export const sidebarZh: SidebarConfig = {
         '/coding/java/base.md',
         '/coding/java/reflect.md',
         '/coding/java/jvm.md',
-        '/coding/java/design-pattern.md'
+        '/coding/java/design-pattern.md',
+        '/coding/java/servlet.md'
       ],
     },
   ],
