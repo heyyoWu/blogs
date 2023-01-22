@@ -79,68 +79,89 @@
 ## 2、基本语法
 
 ### 2.1、注释的几种用法
-1. 文档注释
-2. 多行注释
-3. 单行注释
-   /**
-* 获取名称（文档注释）
-* @return String
-  */
-  public void getName() {
-  /*
-    * 多行注释
-      */
-      String a = "";
-      a = "x";
-      a += "c";
 
-  // 单行注释
-  return "foo";
-  }
-  From 《Clean Code》
-  代码的注释不是越详细越好。实际上好的代码本身就是注释，我们要尽量规范和美化自己的代码来减少不必要的注释。
-  若编程语言足够有表达力，就不需要注释，尽量通过代码来阐述。
-  2.2、“关键字”
-  官方文档
-  分类
-  ß关键字
+<CodeGroup>
+  <CodeGroupItem title="文档注释" active>
 
+```bash
+/**
+ * 获取名称（文档注释）
+ * @return String
+ */
+public void getName() {
+}
+```
 
+  </CodeGroupItem>
 
+  <CodeGroupItem title="多行注释">
 
+```bash
+public void getName() {
+    /*
+     * 多行注释
+     */
+    String a = "";
+}
+```
 
+  </CodeGroupItem>
 
-访问控制
-private
-public
-protected
+  <CodeGroupItem title="单行注释">
 
+```bash
+public void getName() {
+    // 单行注释
+    return "foo";
+}
+```
 
+  </CodeGroupItem>
+</CodeGroup>
 
-
-
-类,变量,方法修饰符
-class
-interface
-enum
-extends
-implement
-abstract
-final
-
-native
-new
-static
-synchronized
-transient
-volatile
-strictfp
-
-default
+::: warning From 《Clean Code》
+&emsp;&emsp;代码的注释不是越详细越好。实际上好的代码本身就是注释，我们要尽量规范和美化自己的代码来减少不必要的注释。
+  <br/>若编程语言足够有表达力，就不需要注释，尽量通过代码来阐述。
+:::
 
 
+### 2.2、“关键字”
+&emsp;&emsp;[官方文档](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)
 
-
+<table>
+    <tr>
+        <th>分类</th>
+        <th colspan="7">关键字</th>
+    </tr>
+    <tr>
+        <td>访问控制</td>
+        <td>private</td>
+        <td>public</td>
+        <td>protected</td>
+    </tr>
+    <tr>
+        <td rowspan="3">类,变量,方法修饰符</td>
+        <td>class</td>
+        <td>interface</td>
+        <td>enum</td>
+        <td>extends</td>
+        <td>implement</td>
+        <td>abstract</td>
+        <td>final</td>
+    </tr>
+    <tr>
+        <td>native</td>
+        <td>new</td>
+        <td>static</td>
+        <td>synchronized</td>
+        <td>transient</td>
+        <td>volatile</td>
+        <td>strictfp</td>
+    </tr>
+    <tr>
+        <td>default</td>
+    </tr>
+</table>
 
 
 
