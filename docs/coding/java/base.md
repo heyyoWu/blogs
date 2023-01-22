@@ -1,3 +1,271 @@
 # 基础
 
-## 11
+## 1、基础概念
+### 1.1、特点
+- 简单易学
+- 面向对象（封装、继承、多态）
+- 平台无关性（跨平台：Write Once, Run Anywhere）
+- 支持多线程
+- 可靠性
+- 安全性
+- 支持简单易用的网络编程能力
+- 编译与解释并存
+
+### 1.2、概念（JVM vs JDK vs JRE）
+
+#### 1.2.1、JVM
+&emsp;&emsp;Java虚拟机（JVM）是运行在Java字节码的虚拟机，JVM有针对不同操作系统的特定实现（Windows，MacOS，Linux），目前是使用相同的字节码，他们会给出相同的结果，字节码和不同操作系统的JVM是现实 “Write Once, Run Anywhere” 的关键所在
+<br />&emsp;&emsp;<strong style="color:#9090fa">JVM并不只有一种，只要满足JVM规范，每个公司，组织或者个人都可以开发自己的专属JVM，也就是说我们平时结束到 HotSpot VM 只是 JVM规范的一种实现而已</strong>
+<br />&emsp;&emsp;除了最常用的 HotSpot VM外，还有 J9 VM、Zing VM、JRockit VM 等VM，维基百科上有常见JVM对比 [Comparison of Java virtual machines](https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines) ，各个版本JVM规范可以参照 [Java SE Specifications](https://docs.oracle.com/javase/specs/index.html)
+
+#### 1.2.2、JDK
+&emsp;&emsp;**JDK**是 <strong style="color:#9090fa">Java Development Kit</strong> 缩写，它是功能齐全的 Java SDK，它拥有 JRE所拥有的一切，还有编译器（javac）和工具（如：javadoc，jdb），它能够创建和编译程序，一般开发者电脑中会安装JDK
+
+#### 1.2.3、JRE
+&emsp;&emsp;**JRE**是Java运行时环境，它是运行已编译Java程序所需的所有内容集合，包括Java虚拟机（JVM），Java类库，Java命令，和其他的一些基础构建，但是它不能用户创建新程序
+<br />&emsp;&emsp;<strong style="color:#9090fa">概述：简而言之，JRE只能用于运行编译后的程序，未经过编译的程序是无法通过JRE运行的，因此开发者都只能使用JDK作为基础环境进行开发，而生成环境中则可使用JRE作为基础环境</strong>
+
+### 1.3、字节码
+在Java中，JVM可以理解的代码就叫做<cite style="color:#bd7575">字节码</cite>（即扩展名为 <strong style="color:#9090fa">.class</strong> 的文件），他不面向任何特定的处理器，只面向JVM虚拟机。Java语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点，所以Java程序运行时相对来说还是高效的（不过与C++，Rust，Go等语言还是有一定差距的）。而且字节码不针对某一特定机器，因此Java程序无需重新编译即可在多种不同操作系统上运行
+![machine-code.jpg](./images/machine-code.jpg)
+&emsp;&emsp;其中 .class => 机器码 在这一步JVM类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方法的执行速度相对会比较慢，而且有些方法和代码块是经常需要被调用的（也就是所谓的热点代码），所以后面引入了 JIT（just-in-time compilation）编译器，当JIT编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用，而我们知道，机器码的运行效率肯定是高于Java解析器的，这也解释了我们为什么经常会说 <strong style="color:#9090fa">Java是编译与解释共存的语言</strong>
+<div style="color:#4e4edc;background:#dcfff1">&emsp;&emsp;HotShot采用了惰性评估（Lazy Evaluation）的做法，根据二八定律，消耗大部分系统资源的只有那一小部分代码（热点代码），二者也就是 JIT 所需要编译的部分，JVM会根据代码每次被执行的情况收集信息并相应的做出一些优化，因为执行的次数越多，它的速度就越快，JKD9引入了新的编译模式 AOT（Ahead of Time Compilation），它是直接将字节码编译成机器码，这样就避免了 JIT 预热等个方面的开销，JDK支持分层编译和AOT协作使用</div>
+
+### 1.4、为什么不全采用AOT
+<div>&emsp;&emsp;既然AOT可以提前编译为机器码，节省启动时间，为什么不全部使用 AOT 这种编译方式呢？</div>
+<br/><div>&emsp;&emsp;这其实和Java现有的生态有些关系，例如：CGLIB动态代理使用的是ASM技术，而这种技术大致原理是运行时直接在内存中生成并加载修改后的 <strong style="color:#9090fa">字节码（.class）</strong>文件，如果全部使用 AOT 提前编译，也就不能使用ASM技术了，为了支持类似的动态特性，因此依旧选择使用 JIT 即时编译.</div>
+
+### 1.5、“编译和解释并存” 是为什么？
+先说说我们对高级编程语言的分类，按照执行方式可以分为两种
+- 编译型：编译型语言会通过编译器将源代码一次性翻译成可被平台执行的机器码，一般情况下，编译语言执行速度比较快，开发效率比较低，常见的编译型语言有 C、C++、Go、Rust等
+- 解释型：解释型语言会通过解释器一句句的将代码解释为机器代码后再执行，解释性语言开发效率比较快，执行速度比较慢，常见的解释型语言有 Python、JavaScript、PHP等
+  <img alt="compile.jpg" height="500" src="./images/compile.jpg" width="400"/>
+
+**根据维基百科介绍**
+> 为了改善编译语言的效率而发展出的 [即时编译](https://zh.wikipedia.org/wiki/%E5%8D%B3%E6%99%82%E7%B7%A8%E8%AD%AF) 技术，已经缩小了这两种语言间的差距，这种技术混合了编译语言与解释型语言的优点，它像编译语言一样，先把程序源代码编译成[字节码](https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E7%A0%81)，到执行期时，再讲字节码直译，之后执行。Java 与 [LVVM](https://zh.wikipedia.org/wiki/LLVM) 就是这种技术的代表产物，
+
+### 1.6、OracleJDK vs OpenJDK
+&emsp;&emsp;现在公司里面很多使用OpenJDK了，因为OracleJDK收费嘛，虽然这么使用，相信很多人都不知道 OpenJDK和OracleJDK的区别吧。
+<br/>&emsp;&emsp;对于 Java7 其实并没有什么区别，OpenJDK是基于 SUN 公司捐赠的 HotSpot 源码实现，此外，OpenJDK被选为Java7的参考实现，被Oracle工程师维护
+
+---
+
+**总结（网上摘抄的一些素材）：**
+1. Oracle JDK 大概每 6 个月发一次主要版本（从 2014 年 3 月 JDK 8 LTS 发布到 2017 年 9 月 JDK 9 发布经历了长达 3 年多的时间，所以并不总是 6 个月），而 OpenJDK 版本大概每三个月发布一次。但这不是固定的，我觉得了解这个没啥用处。详情参见：[https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadenceopen](https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadenceopen)
+2. OpenJDK 是一个参考模型并且是完全开源的，而 Oracle JDK 是 OpenJDK 的一个实现，并不是完全开源的；（个人观点：众所周知，JDK 原来是 SUN 公司开发的，后来 SUN 公司又卖给了 Oracle 公司，Oracle 公司以 Oracle 数据库而著名，而 Oracle 数据库又是闭源的，这个时候 Oracle 公司就不想完全开源了，但是原来的 SUN 公司又把 JDK 给开源了，如果这个时候 Oracle 收购回来之后就把他给闭源，必然会引起很多 Java 开发者的不满，导致大家对 Java 失去信心，那 Oracle 公司收购回来不就把 Java 烂在手里了吗！然后，Oracle 公司就想了个骚操作，这样吧，我把一部分核心代码开源出来给你们玩，并且我要和你们自己搞的 JDK 区分下，你们叫 OpenJDK，我叫 Oracle JDK，我发布我的，你们继续玩你们的，要是你们搞出来什么好玩的东西，我后续发布 Oracle JDK 也会拿来用一下，一举两得！）OpenJDK 开源项目：[https://github.com/openjdk/jdkopen](https://github.com/openjdk/jdkopen)
+3. Oracle JDK 比 OpenJDK 更稳定（肯定啦，Oracle JDK 由 Oracle 内部团队进行单独研发的，而且发布时间比 OpenJDK 更长，质量更有保障）。OpenJDK 和 Oracle JDK 的代码几乎相同（OpenJDK 的代码是从 Oracle JDK 代码派生出来的，可以理解为在 Oracle JDK 分支上拉了一条新的分支叫 OpenJDK，所以大部分代码相同），但 Oracle JDK 有更多的类和一些错误修复。因此，如果您想开发企业/商业软件，我建议您选择 Oracle JDK，因为它经过了彻底的测试和稳定。某些情况下，有些人提到在使用 OpenJDK 可能会遇到了许多应用程序崩溃的问题，但是，只需切换到 Oracle JDK 就可以解决问题；
+4. 在响应性和 JVM 性能方面，Oracle JDK 与 OpenJDK 相比提供了更好的性能；
+5. Oracle JDK 不会为即将发布的版本提供长期支持（如果是 LTS 长期支持版本的话也会，比如 JDK 8，但并不是每个版本都是 LTS 版本），用户每次都必须通过更新到最新版本获得支持来获取最新版本；
+6. Oracle JDK 使用 BCL/OTN 协议获得许可，而 OpenJDK 根据 GPL v2 许可获得许可。
+ ::: tip 既然 Oracle JDK 这么好，那为什么还要有 OpenJDK？
+  答：   
+    1. OpenJDK 是开源的，开源意味着你可以对它根据你自己的需要进行修改、优化，比如 Alibaba 基于 OpenJDK 开发了 Dragonwell8：[https://github.com/alibaba/dragonwell8open](https://github.com/alibaba/dragonwell8open)  
+    2. OpenJDK 是商业免费的（这也是为什么通过 yum 包管理器上默认安装的 JDK 是 OpenJDK 而不是 Oracle JDK）。虽然 Oracle JDK 也是商业免费（比如 JDK 8），但并不是所有版本都是免费的。  
+    3. OpenJDK 更新频率更快。Oracle JDK 一般是每 6 个月发布一个新版本，而 OpenJDK 一般是每 3 个月发布一个新版本。（现在你知道为啥 Oracle JDK 更稳定了吧，先在 OpenJDK 试试水，把大部分问题都解决掉了才在 Oracle JDK 上发布）  
+
+  基于以上这些原因，OpenJDK 还是有存在的必要的！
+ :::
+
+
+   ![cadence.jpeg](./images/cadence.jpeg)
+      
+**🌈 拓展一下：**
+- BCL 协议（Oracle Binary Code License Agreement）： 可以使用 JDK（支持商用），但是不能进行修改。
+- OTN 协议（Oracle Technology Network License Agreement）： 11 及之后新发布的 JDK 用的都是这个协议，可以自己私下用，但是商用需要付费。
+  ![license.png](./images/license.png)
+  相关阅读 👍：[《Differences Between Oracle JDK and OpenJDK》](https://www.baeldung.com/oracle-jdk-vs-openjdk)
+
+
+## 2、基本语法
+
+### 2.1、注释的几种用法
+1. 文档注释
+2. 多行注释
+3. 单行注释
+   /**
+* 获取名称（文档注释）
+* @return String
+  */
+  public void getName() {
+  /*
+    * 多行注释
+      */
+      String a = "";
+      a = "x";
+      a += "c";
+
+  // 单行注释
+  return "foo";
+  }
+  From 《Clean Code》
+  代码的注释不是越详细越好。实际上好的代码本身就是注释，我们要尽量规范和美化自己的代码来减少不必要的注释。
+  若编程语言足够有表达力，就不需要注释，尽量通过代码来阐述。
+  2.2、“关键字”
+  官方文档
+  分类
+  ß关键字
+
+
+
+
+
+
+访问控制
+private
+public
+protected
+
+
+
+
+
+类,变量,方法修饰符
+class
+interface
+enum
+extends
+implement
+abstract
+final
+
+native
+new
+static
+synchronized
+transient
+volatile
+strictfp
+
+default
+
+
+
+
+
+
+
+程序控制
+if
+else
+switch
+case
+break
+continue
+return
+
+do
+while
+for
+default
+instanceof
+assert
+
+错误处理
+try
+catch
+finally
+throw
+throws
+
+
+包相关
+import
+package
+
+
+
+
+
+
+基本类型
+byte
+char
+int
+float
+double
+long
+boolean
+
+short
+
+
+
+
+
+
+变量引用
+super
+this
+void
+
+
+
+
+保留字
+goto
+const
+
+
+
+
+
+### 2.3、自增、自减运算符
+++  --
+int a = 1;
+System.out.print(a++); // 输出 1
+System.out.print(a);   // 输出 2
+
+int b = 1;
+System.out.print(++b); // 输出 2
+System.out.print(b);   // 输出 2
+
+口诀：“符号在前就先加/减，符号在后就后加/减”
+
+### 2.4、continue、break、return 区别
+- continue:  跳出单次循环，继续下一次循环
+- break:  结束循环体，继续循环后的代码
+- return:  跳出所在方法，结束该方法的运行
+
+### 2.5、变量
+#### 2.5.1、成员变量 与 局部变量
+- 语法形式 ：
+    - 成员变量属于类，而局部变量是在代码块或方法中定义的变量或方法的参数。
+    - 成员变量可以被 public，private，static 等修饰符修饰，但是局部变量则不可被这些修饰符修饰，但是两个都可被 final 修饰符修饰
+- 存储方式 ：
+    - 如果成员变量被static修饰，该变量是属于类的，如果没有static修饰，该成员变量属于实例
+    - 对象存在于堆内存，局部变量存在于栈内存
+- 生存时间 ：
+    - 从变量的生存时间上来说，成员变量是对象的一部分，随对象的创建而存在，局部变量随着方法的调用而生成，随方法调用结束而消亡
+- 默认值：
+    - 成员变量如果没有被赋初始值，则会以类型的默认值进行赋值（被final修饰的变量必须显式赋值），局部变量则不会自动赋值
+
+#### 2.5.2、静态变量
+- 可以被类的所有实例共享，无论一个类创建多少对象，他们都共享同一份静态变量
+- 通常情况下静态变量会被 final 关键字修饰为常亮
+
+字符型常量和字符串常量的区别
+1. 字符常量是由单引号引起的一个字符
+2. 字符串常量是双引号引起的0个或若干个字符
+3. 字符常量相当于一个整型值（ASCII值），可以参与表达式运算
+4. 字符串常量代表一个地址值（该字符串在内存中存放位置）
+5. 占用内存：
+1. 字符常量占 2 个字节（char在java中占两个字节）
+2. 字符串占若干个字节
+
+### 2.6、方法
+静态方法为什么不能调用非静态成员
+静态方法属于类，在类加载的时候就会分配内存，可以通过类名直接访问，也可以使用对象直接访问
+
+
+3、基本数据类型
+4、面向对象
+5、常见类
+6、异常
+7、放射
+8、泛型
+9、注解
+10、SPI
+11、IO
+12、动态代理
+
+13、语法糖
