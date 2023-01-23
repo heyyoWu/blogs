@@ -433,6 +433,83 @@ public class Demo {
 :::
 
 ## 3、基本数据类型
+<h3>Java中的几种基本数据类型是很重要的，你了解几种呢？</h3>
+
+Java种有 **8** 种基本数据类型
+
+- **6** 种数字类型：  
+  - **4** 种整数类型：**`byte`**、**`short`**、**`long`**
+  - **2** 种浮点类型：**`float`**、**`double`**
+- **1** 种字符类型：**`char`**
+- **1** 种布尔类型：**`boolean`**
+
+<Badge type="tip" text="TIP" vertical="middle" /> 这 8 种基本数据类型的默认值以及所占空间的大小如下：
+<table>
+    <tr>
+        <th>基本类型</th>
+        <th>位数</th>
+        <th>字节</th>
+        <th>默认值</th>
+        <th>取值范围</th>
+    </tr>
+    <tr>
+        <td>byte</td>
+        <td>8</td>
+        <td>1</td>
+        <td>0</td>
+        <td>-128 ~ 127</td>
+    </tr>
+    <tr>
+        <td>short</td>
+        <td>16</td>
+        <td>2</td>
+        <td>0</td>
+        <td>-32768 ~ 32767</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>32</td>
+        <td>4</td>
+        <td>0</td>
+        <td>-2147483648 ~ 2147483647</td>
+    </tr>
+    <tr>
+        <td>long</td>
+        <td>64</td>
+        <td>8</td>
+        <td>0L</td>
+        <td>-9223372036854775808 ~ 9223372036854775807</td>
+    </tr>
+    <tr>
+        <td>char</td>
+        <td>16</td>
+        <td>2</td>
+        <td>'u0000'</td>
+        <td>0 ~ 65535</td>
+    </tr>
+    <tr>
+        <td>float</td>
+        <td>32</td>
+        <td>4</td>
+        <td>0f</td>
+        <td>1.4E-45 ~ 3.4028235E38</td>
+    </tr>
+    <tr>
+        <td>double</td>
+        <td>64</td>
+        <td>8</td>
+        <td>0d</td>
+        <td>4.9E-324 ~ 1.7976931348623157E308</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>1</td>
+        <td></td>
+        <td>false</td>
+        <td>true、false</td>
+    </tr>
+</table>
+
 ## 4、面向对象
 ## 5、常见类
 ## 6、异常
