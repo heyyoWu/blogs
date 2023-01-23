@@ -295,9 +295,142 @@ System.out.print(b);   // 输出 2
 :::
 
 ### 2.6、方法
-静态方法为什么不能调用非静态成员
-静态方法属于类，在类加载的时候就会分配内存，可以通过类名直接访问，也可以使用对象直接访问
+::: tip 静态方法为什么不能调用非静态成员
+&emsp;&emsp;静态方法属于类，在类加载的时候就会分配内存，可以通过类名直接访问，也可以使用对象直接访问。   
+&emsp;&emsp;在类的非静态成员不存在的时候，静态成员已经存在了，此时调用内存中不存在的非静态成员，属于非法操作。
+:::
 
+#### 2.6.1、重载
+&emsp;&emsp;发生在同一个类中（或者父类和子类之间），**`方法名必须相同`**，**`参数类型不同`**、**`个数不同`**、**`顺序不同`**，方法返回值和访问修饰符可以不同。
+
+::: tip
+**《Java 核心技术》这本书是这样介绍重载的：**  
+&emsp;&emsp;如果多个方法(比如 StringBuilder 的构造方法)有相同的名字、不同的参数， 便产生了重载。
+```java
+StringBuilder sb = new StringBuilder();
+StringBuilder sb2 = new StringBuilder("HelloWorld");
+```
+编译器必须挑选出具体执行哪个方法，它通过用各个方法给出的参数类型与特定方法调用所使用的值类型进行匹配来挑选出相应的方法。 如果编译器找不到匹配的参数， 就会产生编译时错误， 因为根本不存在匹配， 或者没有一个比其他的更好(这个过程被称为 **`重载解析`** (overloading resolution))。  
+**Java 允许重载任何方法， 而不只是构造器方法。**
+:::
+
+> <Badge type="tip" text="TIP" vertical="middle" />  **重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。**
+
+#### 2.6.2、重写
+&emsp;&emsp;重写发生在运行期，是子类对父类的允许访问的方法的实现过程进行重新编写。
+- 方法名、参数列表必须相同，子类方法返回值类型应比父类方法返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。
+- 如果父类方法访问修饰符为 private/final/static 则子类就不能重写该方法，但是被 static 修饰的方法能够被再次声明。
+- 构造方法无法被重写
+
+> <Badge type="tip" text="TIP" vertical="middle" />  **重写就是子类对父类方法的重新改造，外部样子不能改变，内部逻辑可以改变。**
+  
+
+#### 2.6.3、区别
+
+<table>
+    <tr>
+        <th style="width: 80px">区别点</th>
+        <th style="width: 65px">重载方法</th>
+        <th>重写方法</th>
+    </tr>
+    <tr>
+        <td>发生范围</td>
+        <td>同一个类</td>
+        <td>子类</td>
+    </tr>
+    <tr>
+        <td>参数列表</td>
+        <td>必须修改</td>
+        <td>不能修改</td>
+    </tr>
+    <tr>
+        <td>返回类型</td>
+        <td>可修改</td>
+        <td>子类方法返回类型应该比父类方法返回值类型更小或是相等</td>
+    </tr>
+    <tr>
+        <td>异常</td>
+        <td>可修改</td>
+        <td>子类方法声明抛出的异常类应该比父类方法声明抛出的异常类更小或是相等</td>
+    </tr>
+    <tr>
+        <td>访问修饰符</td>
+        <td>可修改</td>
+        <td>一定不能做更严格的限制（可以降低限制）</td>
+    </tr>
+    <tr>
+        <td>发生阶段</td>
+        <td>编译期</td>
+        <td>运行期</td>
+    </tr>
+</table>
+
+
+#### 2.6.4、可变参数
+&emsp;&emsp;从 Java5 开始，Java 支持定义可变长参数，所谓可变长参数就是允许在调用方法时传入不定长度的参数。方法可以接受 0 个或者多个参数。
+
+<Badge type="warning" text="注意" vertical="middle" /> **可变参数可固定参数谁优先匹配**
+
+> 答案: 会优先匹配固定参数的方法，因为固定参数的方法匹配度更高。
+
+```java
+public class Demo {
+    public static void test1(String... args) {
+        for (String arg : args) {
+            System.out.println(arg);
+        }
+    }
+
+    public static void test1(String a, String b) {
+        System.out.println(a + b);
+    }
+
+    public static void main(String[] args) {
+        test1("a", "b", "c");
+        test1("a", "b");
+    }
+}
+```
+输出
+```text
+a
+b
+c
+ab
+```
+
+<Badge type="warning" text="注意" vertical="middle" /> **可变参数和数组参数的区别**
+
+&emsp;&emsp;通过编译后的代码可以看到，可变参数编译后会被转换为一个数组，找到编译后的 **`class`** 文件可以看到以下内容 
+
+```java
+public class Demo {
+    public static void test1(String... args) {
+        String[] var1 = args;
+        int var2 = args.length;
+
+        for(int var3 = 0; var3 < var2; ++var3) {
+            String arg = var1[var3];
+            System.out.println(arg);
+        }
+    }
+}
+```
+
+::: danger
+**以下两个方法是等价的，不可同时在一个类上定义，不能作为重载方法** <Badge type="danger" text="违法操作" vertical="top" />
+```java
+public class Demo {
+    public static void test1(String... args) {
+        
+    }
+
+    public static void test1(String[] arr) {
+        
+    }
+}
+```
+:::
 
 ## 3、基本数据类型
 ## 4、面向对象
