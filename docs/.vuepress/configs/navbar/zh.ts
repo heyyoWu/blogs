@@ -8,7 +8,8 @@ export const navbarZh: NavbarConfig = [
       '/coding/java/reflect.md',
       '/coding/java/jvm.md',
       '/coding/java/design-pattern.md',
-      '/coding/java/servlet.md'
+      '/coding/java/servlet.md',
+      '/coding/other/float.md'
     ]
   },
   {

@@ -6,7 +6,7 @@ heroText: 知识的冒险者
 tagline: 没有什么不可以
 actions:
   - text: 马上开刷
-    link: /zh/guide/getting-started.html
+    link: /coding/java/base.html
     type: primary
 features:
   - title: 简洁至上

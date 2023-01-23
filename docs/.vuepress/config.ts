@@ -25,6 +25,7 @@ export default defineUserConfig({
     repoLabel: 'GitHub',
     editLink: true,
     lastUpdated: true,
+    sidebarDepth: 2,
     locales: {
       '/': {
         navbar: navbarZh,

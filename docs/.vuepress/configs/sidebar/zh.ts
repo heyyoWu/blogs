@@ -4,14 +4,23 @@ export const sidebarZh: SidebarConfig = {
   '/coding/': [
     {
       text: 'Java系列',
+      collapsible:true,
       children: [
         '/coding/java/base.md',
+        '/coding/java/object.md',
         '/coding/java/reflect.md',
         '/coding/java/jvm.md',
         '/coding/java/design-pattern.md',
         '/coding/java/servlet.md'
-      ],
+      ]
     },
+    {
+      text:'其他',
+      collapsible:true,
+      children: [
+          '/coding/other/float.md'
+      ]
+    }
   ],
   '/book/': [
     {

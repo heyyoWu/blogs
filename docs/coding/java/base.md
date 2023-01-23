@@ -532,30 +532,268 @@ Java种有 **8** 种基本数据类型
 :::warning
 :warning: 基本数据类型存放在栈中是一个常见的误区！ 基本数据类型的成员变量如果没有被 static 修饰的话（不建议这么使用，应该要使用基本数据类型对应的包装类型），就存放在堆中。
 ```java
-public class Demo{
+public class Demo {
   private int a;
 }
 ```
 :::
 
 ### 3.3、包装类型的缓存机制是什么？
+<br/>
+&emsp;<Badge type="danger" text="提示" vertical="middle" />: Java 基本数据类型的包装类型大部分都用到了缓存机制来提升性能。
+
+- **`Byte`**、**`Short`**、**`Integer`**、**`Long`** 这四种包装类默认创建了数值 [-128 ~ 127] 的相应类型的缓存数据  
+- **`Character`** 创建了数值在 [0 ~ 127] 范围的缓存数据  
+- **`Boolean`** 直接返回 `True` or `Flase`  
+
+**缓存源码**
+
+<CodeGroup>
+  <CodeGroupItem title="Byte" active>
+
+```java{3,12,13}
+public static Byte valueOf(byte b) {
+final int offset = 128;
+return ByteCache.cache[(int)b + offset];
+}
+
+private static class ByteCache {
+private ByteCache(){}
+
+    static final Byte cache[] = new Byte[-(-128) + 127 + 1];
+
+    static {
+        for(int i = 0; i < cache.length; i++)
+            cache[i] = new Byte((byte)(i - 128));
+    }
+}
+```
+
+</CodeGroupItem>
+  <CodeGroupItem title="Short">
+
+```java{5,16,17}
+public static Short valueOf(short s) {
+    final int offset = 128;
+    int sAsInt = s;
+    if (sAsInt >= -128 && sAsInt <= 127) { // must cache
+        return ShortCache.cache[sAsInt + offset];
+    }
+    return new Short(s);
+}
+
+private static class ShortCache {
+    private ShortCache(){}
+
+    static final Short cache[] = new Short[-(-128) + 127 + 1];
+
+    static {
+        for(int i = 0; i < cache.length; i++)
+            cache[i] = new Short((short)(i - 128));
+    }
+}
+```
+
+</CodeGroupItem>
+  <CodeGroupItem title="Integer">
+
+```java{3}
+public static Integer valueOf(int i) {
+    if (i >= IntegerCache.low && i <= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+private static class IntegerCache {
+    static final int low = -128;
+    static final int high;
+    static {
+        // high value may be configured by property
+        int h = 127;
+    }
+}
+```
+
+</CodeGroupItem>
+  <CodeGroupItem title="Long">
+
+```java{4,15,16}
+public static Long valueOf(long l) {
+    final int offset = 128;
+    if (l >= -128 && l <= 127) { // will cache
+        return LongCache.cache[(int)l + offset];
+    }
+    return new Long(l);
+}
+        
+private static class LongCache {
+    private LongCache(){}
+
+    static final Long cache[] = new Long[-(-128) + 127 + 1];
+
+    static {
+        for(int i = 0; i < cache.length; i++)
+            cache[i] = new Long(i - 128);
+    }
+}
+```
+
+</CodeGroupItem>
+  <CodeGroupItem title="Character">
+
+```java{3,12,13}
+public static Character valueOf(char c) {
+    if (c <= 127) { // must cache
+      return CharacterCache.cache[(int)c];
+    }
+    return new Character(c);
+}
+
+private static class CharacterCache {
+    private CharacterCache(){}
+    static final Character cache[] = new Character[127 + 1];
+    static {
+        for (int i = 0; i < cache.length; i++)
+            cache[i] = new Character((char)i);
+    }
+}
+```
+
+</CodeGroupItem>
+  <CodeGroupItem title="Boolean">
+
+```java
+public static Boolean valueOf(boolean b) {
+    return (b ? TRUE : FALSE);
+}
+```
+
+</CodeGroupItem>
+</CodeGroup>
+
+::: warning
+如果超出对应范围仍然会去创建新的对象，缓存的范围区间大小只是在性能和资源之间的权衡。
+:::
+
+**两种浮点数类型的包装类 `Float`、`Double` 并没有实现缓存机制**
+
+**看个示例**
+```java
+Integer a1 = 11;
+Integer b1 = 11;
+System.out.println(a1 == b1); // 输出 true
+
+Integer a2 = 200;
+Integer b2 = 200;
+System.out.println(a2 == b2); // 输出 false
+
+Float a3 = 33f;
+Float b3 = 33f;
+System.out.println(a3 == b3);// 输出 false
+
+Double a4 = 1.2;
+Double b4 = 1.2;
+System.out.println(a4 == b4);// 输出 false
+```
+
+**让我们来做一道题目试试看**
+```java
+Integer a = 10;
+Integer b = new Integer(10);
+
+System.out.println(a == b);
+```
+
+> 解析： `Integer a = 10` 这一行会发生自动装箱，相当于 `Integer a = Integer.valueOf(10)`，因此 `a` 直接使用的是缓存中的对象，而 `Integer b = new Integer(10)` 会直接创建新的对象
+> <br/><br/>因此答案是：`false` 你答对了吗？
+
+:::danger
+记住，所有包装类对象之间值的比较，全部使用 **`equals`** 方法
+![equals.png](./images/equals.png)
+:::
 
 ### 3.4、自动装箱&拆箱概念和原理
 
+**什么是自动拆装箱**
+- **`装箱`**: 将基本类型用他们对应的引用类型包装起来
+- **`拆箱`**: 将包装类型转换为基本数据类型
+
+**示例**
+```java
+Integer a = 10; // 自动装箱 ，等价于  Integer a = Integer.valueOf(10)
+int b = a; // 自动拆箱，等价于  int b = a.intValue();
+```
+
+:::danger
+**注意：如果频繁拆装箱的话，也会严重影响系统的性能。我们应该尽量避免不必要的拆装箱操作。**
+```java
+private static long sum() {
+    // 应该使用 long 而不是 Long
+    Long sum = 0L;
+    for (long i = 0; i <= Integer.MAX_VALUE; i++) {
+        sum += i;
+    }
+    return sum;
+}
+```
+:::
+
 ### 3.5、为什么浮点数运算会有精度丢失的分险？
+
+**浮点数运算精度丢失代码实例**
+```java
+float a = 2.0f - 1.9f;
+float b = 1.8f - 1.7f;
+
+System.out.println(a);// 0.100000024
+System.out.println(b);// 0.099999905
+System.out.println(a == b);// false
+```
+
+**为什么会出现这种问题呢？？？**
+
+> 这个和计算机保存浮点数的机制有很大的关系。我们知道计算机是二进制的，而且计算机在表示一个数字时，宽度是有限的，无线循环的小数存储在计算机时，智能被截断，所以就会导致小数精度发生损失的情况。这也就解释了为什么浮点数没有办法用二进制精确表示。
+
+**就比如说十进制下的`0.2`没办法精确转换成二进制小数：**
+```java
+// 0.2 转换为二进制的过程为，不断的乘以 2，直到不存在小数为止
+// 在这个计算过程中，得到的整数部分从上到下排列就是二进制的结果
+0.2 * 2 = 0.4 -> 0
+0.4 * 2 = 0.8 -> 0
+0.8 * 2 = 1.6 -> 1
+0.6 * 2 = 1.2 -> 1
+0.2 * 2 = 0.2 -> 0 (发生循环)
+...
+```
+
+关于浮点数的更多内容，参考 [【浮点数详解】](/coding/other/float.html)
 
 ### 3.6、解决浮点数运算精度丢失
 
+&emsp;&emsp;Java提供的 [**`BigDecimal`**](/coding/other/bigdecimal.md) 可以实现对浮点数的运算，不会造成精度丢失。通常情况下，大部分需要浮点数精确运算结果的业务场景（比如涉及到钱的运算场景）都是通过 [**`BigDecimal`**](/coding/other/bigdecimal.md) 来做。
+
+**运算示例：**
+```java
+BigDecimal a = new BigDecimal("1.0");
+BigDecimal b = new BigDecimal("0.9");
+BigDecimal c = new BigDecimal("0.8");
+
+BigDecimal x = a.subtract(b);
+BigDecimal y = b.subtract(c);
+
+System.out.println(x); /* 0.1 */
+System.out.println(y); /* 0.1 */
+System.out.println(Objects.equals(x, y)); /* true */
+```
+
 ### 3.7、超过long类型数据如果表示？
+> 基本数值类型都有一个表达范围，如果超过这个范围就会有数值溢出的风险。
 
+**在 Java 中，64 位 long 整型是最大的整数类型。**
+```java
+long l = Long.MAX_VALUE;
+System.out.println(l + 1); // -9223372036854775808
+System.out.println(l + 1 == Long.MIN_VALUE); // true
+```
 
-## 4、面向对象
-## 5、常见类
-## 6、异常
-## 7、放射
-## 8、泛型
-## 9、注解
-## 10、SPI
-## 11、IO
-## 12、动态代理
-## 13、语法糖
+**`BigInteger`** 内部使用 int[] 数组来存储任意大小的整形数据。
+<br/>相对于常规整数类型的运算来说，**`BigInteger`** 运算的效率会相对较低。
