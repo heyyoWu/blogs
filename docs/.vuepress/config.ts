@@ -4,6 +4,9 @@ import { head, navbarZh, sidebarZh } from './configs'
 import { searchPlugin } from '@vuepress/plugin-search'
 import { defineUserConfig, defaultTheme } from 'vuepress'
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
+import { copyCodePlugin } from "vuepress-plugin-copy-code2";
+import { commentPlugin } from "vuepress-plugin-comment2";
+
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -52,7 +55,7 @@ export default defineUserConfig({
       }
     },
     themePlugins: {
-      git: isProd,
+      git: !isProd,
       prismjs: !isProd,
       activeHeaderLinks: true,
       backToTop: true,
@@ -70,19 +73,36 @@ export default defineUserConfig({
     }
   }),
   plugins:[
-    docsearchPlugin({
-      apiKey:'666',
-      indexName:'666',
-      appId:'',
-      searchParameters:'',
-      placeholder:'搜索',
-    }),
-    // searchPlugin({
-    //   locales: {
-    //     '/': {
-    //       placeholder: '搜索',
-    //     },
-    //   }
+    // docsearchPlugin({
+    //   apiKey:'666',
+    //   indexName:'666',
+    //   appId:'',
+    //   searchParameters:'',
+    //   placeholder:'搜索',
     // }),
+    searchPlugin({
+      locales: {
+        '/': {
+          placeholder: '搜索',
+        },
+      }
+    }),
+    copyCodePlugin({
+      pure:false,
+      duration:1000
+    }),
+    commentPlugin({
+      provider: 'Giscus',
+      comment: true,
+      repo: 'wumindc/blogs',
+      repoId:'R_kgDOHH6OUw',
+      category:'Announcements',
+      categoryId:'DIC_kwDOHH6OU84CTxJJ',
+      mapping: 'pathname',
+      strict: true,
+      lazyLoading: true,
+      reactionsEnabled: true,
+      inputPosition:'top',
+    }),
   ]
 })
