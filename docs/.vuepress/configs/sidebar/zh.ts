@@ -8,10 +8,24 @@ export const sidebarZh: SidebarConfig = {
       children: [
         '/coding/java/base.md',
         '/coding/java/object.md',
+
+        '/coding/java/operator.md',
+        '/coding/java/access.md',
+        '/coding/java/control.md',
+        '/coding/java/type.md',
+        '/coding/java/initial.md',
+        '/coding/java/collection.md',
+        '/coding/java/enum.md',
+        '/coding/java/generic.md',
+        '/coding/java/exception.md',
+        '/coding/java/io.md',
+        '/coding/java/annotation.md',
+        '/coding/java/concurrency.md',
+
         '/coding/java/reflect.md',
         '/coding/java/jvm.md',
         '/coding/java/design-pattern.md',
-        '/coding/java/servlet.md'
+        '/coding/java/servlet.md',
       ]
     },
     {
