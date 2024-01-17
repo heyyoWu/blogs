@@ -1,7 +1,7 @@
 import type { SidebarConfig } from 'vuepress'
-
+// 左侧菜单
 export const sidebarZh: SidebarConfig = {
-  '/coding/': [
+  '/coding/java/': [
     {
       text: 'Java系列',
       collapsible:true,
@@ -35,6 +35,43 @@ export const sidebarZh: SidebarConfig = {
           '/coding/other/float.md'
       ]
     }
+  ],
+  '/coding/linux/': [
+    {
+      text: 'Linux系列',
+      collapsible:false,
+      children: [
+        '/coding/linux/info.md',
+        '/coding/linux/command.md',
+      ]
+    },
+  ],
+  '/coding/docker/': [
+    {
+      text: 'Docker系列',
+      collapsible:false,
+      children: [
+        '/coding/docker/info.md',
+      ]
+    },
+  ],
+  '/coding/kubernetes/': [
+    {
+      text: 'Kubernetes系列',
+      collapsible:false,
+      children: [
+        '/coding/kubernetes/info.md',
+      ]
+    },
+  ],
+  '/coding/prometheus/': [
+    {
+      text: 'Prometheus系列',
+      collapsible:false,
+      children: [
+        '/coding/prometheus/info.md',
+      ]
+    },
   ],
   '/book/': [
     {

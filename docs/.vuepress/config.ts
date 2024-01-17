@@ -16,8 +16,8 @@ export default defineUserConfig({
   locales: {
     '/': {
       lang: 'zh-CN',
-      title: '冒险者',
-      description: '没有什么不可以',
+      title: 'coder',
+      description: 'coding everything',
     }
   },
   theme: defaultTheme({

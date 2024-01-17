@@ -1,5 +1,5 @@
 import type { NavbarConfig } from 'vuepress'
-
+// 顶部导航栏
 export const navbarZh: NavbarConfig = [
   {
     text: 'Java',
@@ -10,6 +10,34 @@ export const navbarZh: NavbarConfig = [
       '/coding/java/design-pattern.md',
       '/coding/java/servlet.md',
       '/coding/other/float.md'
+    ]
+  },
+  {
+    text: 'DevOps',
+    children: [
+      {
+        text: 'Linux系列',
+        children: [
+        ],
+      },
+      {
+        text: 'Docker系列',
+        children: [
+          '/coding/docker/info.md'
+        ],
+      },
+      {
+        text: 'Kubernetes系列',
+        children: [
+          '/coding/kubernetes/info.md'
+        ],
+      },
+      {
+        text: 'Prometheus系列',
+        children: [
+          '/coding/prometheus/info.md'
+        ],
+      },
     ]
   },
   {

@@ -2,8 +2,8 @@
 home: true
 title: 首页
 heroImage: /images/hero.png
-heroText: 知识的冒险者
-tagline: 没有什么不可以
+heroText: 多编码，多思考
+tagline: 80 岁见
 actions:
   - text: 马上开刷
     link: /coding/java/base.html
@@ -23,61 +23,3 @@ features:
     details: 默认的打包工具是 Vite ，也同样支持 Webpack 。选一个你喜欢的来使用吧！
 footer: MIT Licensed | Copyright © 2023-present wu-min
 ---
-
-### 像数 1, 2, 3 一样容易
-
-<CodeGroup>
-  <CodeGroupItem title="PNPM" active>
-
-```bash
-# 在你的项目中安装
-pnpm add -D vuepress@next @vuepress/client@next vue
-
-# 新建一个 markdown 文件
-echo '# Hello VuePress' > README.md
-
-# 开始写作
-pnpm vuepress dev
-
-# 构建静态文件
-pnpm vuepress build
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="YARN">
-
-```bash
-# 在你的项目中安装
-yarn add -D vuepress@next
-
-# 新建一个 markdown 文件
-echo '# Hello VuePress' > README.md
-
-# 开始写作
-yarn vuepress dev
-
-# 构建静态文件
-yarn vuepress build
-```
-
-  </CodeGroupItem>
-
-  <CodeGroupItem title="NPM">
-
-```bash
-# 在你的项目中安装
-npm install -D vuepress@next
-
-# 新建一个 markdown 文件
-echo '# Hello VuePress' > README.md
-
-# 开始写作
-npx vuepress dev
-
-# 构建静态文件
-npx vuepress build
-```
-
-  </CodeGroupItem>
-</CodeGroup>
