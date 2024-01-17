@@ -18,6 +18,7 @@ export const navbarZh: NavbarConfig = [
       {
         text: 'Linux系列',
         children: [
+          '/coding/linux/info.md'
         ],
       },
       {
